@@ -62,7 +62,7 @@ String.prototype.minus = function( b ) {
   return res.reverse().join('');
 };
 
-// Умножение
+// multiplication operation
 String.prototype.multiply = function( b ) {
   let a = this.replace( /^0+/, '' ) || '0';
   b = b.replace( /^0+/, '' ) || '0';
@@ -89,7 +89,7 @@ String.prototype.multiply = function( b ) {
   return result.join('');
 };
 
-// Деление
+// division operation
 String.prototype.divide = function( b ) {
   let a = this.replace( /^0+/, '' ) || '0';
   b = b.replace( /^0+/, '' ) || '0';
