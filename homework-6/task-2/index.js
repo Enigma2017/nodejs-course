@@ -25,4 +25,4 @@ const highlighted = highlightKeywords( template, keywords );
 
 console.log( highlighted );
 
-document.body.innerHTML += `<p>${ highlighted}</p>`;
+document.body.innerHTML += `<p>${highlighted}</p>`;
