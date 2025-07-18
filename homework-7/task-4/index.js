@@ -7,13 +7,13 @@ function promisify(callbackBasedFn) {
         } else {
           resolve(result);
         }
-      });
-    });
+      } );
+    } );
   };
 }
 
 function callbackStyleFunction( value, callback ) {
-  setTimeout(() => {
+  setTimeout( () => {
     if ( value > 0 ) {
       callback( null, value * 2 );
     } else {
