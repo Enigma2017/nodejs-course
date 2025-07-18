@@ -1,45 +1,35 @@
-function createCounter() {
-  let count = 0;
-  return function () {
-    count++;
-    return count;
-  };
-}
+function chainPromises(functions) {
+  if ( !Array.isArray(functions) ) {
+    return Promise.reject( new TypeError( "Argument must be an array of functions" ) );
+  }
 
-function repeatFunction( fn, times ) {
-  return function () {
-    if ( typeof fn !== "function" ) {
-      throw new Error( "First argument must be a function" );
+  return functions.reduce( ( prevPromise, currentFn, index ) => {
+    if ( typeof currentFn !== 'function' ) {
+      return Promise.reject( new TypeError( `Element at index ${index} is not a function` ) );
     }
 
-    if ( times > 0 ) {
-      for ( let i = 0; i < times; i++ ) {
-        fn();
-      }
-    } else if ( times < 0 ) {
-      const interval = setInterval( fn, 1000 );
-      return () => clearInterval( interval );
-    }
-  };
+    return prevPromise.then(currentFn);
+  }, Promise.resolve() );
 }
 
-const counterA = createCounter();
-console.log( "Counter A:", counterA() );
-console.log( "Counter A:", counterA() );
+function asyncFunction1() {
+  return Promise.resolve( "Result from asyncFunction1" );
+}
 
-const counterB = createCounter();
-console.log( "Counter B:", counterB() );
-console.log( "Counter A:", counterA() );
+function asyncFunction2(data) {
+  return Promise.resolve( data + " - Result from asyncFunction2" );
+}
 
-const sayHello = () => console.log( "Hello!" );
+function asyncFunction3(data) {
+  return Promise.resolve( data + " - Result from asyncFunction3" );
+}
 
-const run3Times = repeatFunction( sayHello, 3 );
-run3Times();
+const functionsArray = [ asyncFunction1, asyncFunction2, asyncFunction3 ];
 
-const runForever = repeatFunction( () => console.log( "Hello!" ), -1 );
-const stop = runForever();
-
-setTimeout( () => {
-  stop();
-  console.log( "Stopped infinite repetition." );
-}, 5000 );
+chainPromises(functionsArray)
+  .then( result => {
+    console.log( "Chained promise result:", result );
+  } )
+  .catch(error => {
+    console.error( "Chained promise error:", error );
+  } );
